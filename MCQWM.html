@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minecraft资源与论坛百科</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        :root {
+            --primary: #4CAF50;
+            --primary-dark: #388E3C;
+            --secondary: #FF9800;
+            --dark: #2C3E50;
+            --light: #F5F5F5;
+            --gray: #757575;
+            --douyin: #FE2C55;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="rgba(255,255,255,0.1)"/></svg>');
+            background-size: cover;
+        }
+        
+        .logo {
+            font-size: 2.8rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .logo-icon {
+            margin-right: 15px;
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .douyin-link {
+            display: inline-flex;
+            align-items: center;
+            background-color: var(--douyin);
+            color: white;
+            padding: 0.7rem 1.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            margin: 1rem auto;
+            transition: all 0.3s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 10;
+        }
+        
+        .douyin-link:hover {
+            background-color: #d81e42;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+        
+        .douyin-link i {
+            margin-right: 8px;
+            font-size: 1.2rem;
+        }
+        
+        .intro {
+            background-color: white;
+            padding: 1.8rem;
+            margin: 2rem auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            border-left: 5px solid var(--primary);
+            position: relative;
+        }
+        
+        .intro::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 10px solid white;
+        }
+        
+        .websites-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+            margin: 2.5rem 0;
+        }
+        
+        .website-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+        }
+        
+        .website-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .card-header {
+            background: linear-gradient(to right, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 1.2rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .card-icon {
+            font-size: 1.8rem;
+            margin-right: 12px;
+        }
+        
+        .card-body {
+            padding: 1.8rem;
+        }
+        
+        .card-body p {
+            margin-bottom: 1.5rem;
+            color: var(--gray);
+            font-size: 1rem;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--primary);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            font-size: 1rem;
+        }
+        
+        .btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn i {
+            margin-right: 8px;
+        }
+        
+        footer {
+            background-color: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 3rem 0;
+            margin-top: 4rem;
+        }
+        
+        .official-wiki-btn {
+            background-color: var(--secondary);
+            margin: 1.5rem auto;
+            font-size: 1.2rem;
+            padding: 1rem 2.5rem;
+            max-width: 350px;
+            border-radius: 50px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .official-wiki-btn:hover {
+            background-color: #F57C00;
+        }
+        
+        .category {
+            margin: 3rem 0 1.5rem 0;
+            padding-bottom: 0.8rem;
+            border-bottom: 3px solid var(--primary);
+            font-size: 1.8rem;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+        }
+        
+        .category i {
+            margin-right: 12px;
+            color: var(--primary);
+        }
+        
+        .official-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--secondary);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        .community-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #9C27B0;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        @media (max-width: 768px) {
+            .websites-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .logo {
+                font-size: 2.2rem;
+            }
+            
+            header p {
+                font-size: 1rem;
+            }
+            
+            .category {
+                font-size: 1.5rem;
+            }
+        }
+        
+        .search-box {
+            max-width: 600px;
+            margin: 1.5rem auto;
+            position: relative;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            border-radius: 50px;
+            border: 2px solid #e0e0e0;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+        }
+        
+        .search-box i {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+        }
+        
+        .link-test {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1 class="logo">
+                <span class="logo-icon"><i class="fas fa-cube"></i></span> Minecraft资源与论坛百科
+            </h1>
+            <p>收录Minecraft国际版官方资源、Wiki与热门论坛，点击按钮直接访问</p>
+            
+            <!-- 修复后的抖音链接 -->
+            <a href="https://www.douyin.com/user/MS4wLjABAAAAXoTjFKppbS98ZhYOlRIiWF9PvqVh1-kCTlNutO8FIh4?from_tab_name=main" 
+               class="douyin-link" 
+               target="_blank" 
+               rel="noopener noreferrer">
+                <i class="fab fa-tiktok"></i> 网站作者抖音主页
+            </a>
+            
+            <div class="link-test">
+                点击上方按钮测试抖音链接是否正常工作
+            </div>
+            
+            <div class="search-box">
+                <input type="text" placeholder="搜索资源...">
+                <i class="fas fa-search"></i>
+            </div>
+        </div>
+    </header>
+    
+    <main class="container">
+        <section class="intro">
+            <p>本网站专门收录《我的世界》国际版官方资源、Wiki百科和热门论坛社区，所有链接均为官方或权威社区资源。点击卡片中的按钮即可快速访问对应网站。</p>
+        </section>
+        
+        <h2 class="category"><i class="fas fa-globe"></i> 官方网站</h2>
+        <div class="websites-grid">
+            <div class="website-card">
+                <div class="official-badge">官方</div>
+                <div class="card-header">
+                    <i class="fas fa-home card-icon"></i>
+                    <h3>Minecraft 官方网站</h3>
+                </div>
+                <div class="card-body">
+                    <p>Minecraft 官方主网站，获取最新游戏新闻、购买游戏、下载官方启动器和周边产品。</p>
+                    <a href="https://www.minecraft.net/zh-hans" class="btn" target="_blank" rel="noopener noreferrer">
+                        <i class="fas fa-external-link-alt"></i> 访问官网
+                    </a>
+                </div>
+            </div>
+            
+            <div class="website-card">
+                <div class="official-badge">官方</div>
+                <div class="card-header">
+                    <i class="fas fa-bug card-icon"></i>
+                    <h3>Mojang 漏洞追踪器</h3>
+                </div>
+                <div class="card-body">
+                    <p>Mojang官方建立的漏洞反馈网站，发现游戏bug可以在这里提交报告，跟踪修复状态。</p>
+                    <a href="https://bugs.mojang.com" class="btn" target="_blank" rel="noopener noreferrer">
+                        <i class="fas fa-external-link-alt"></i> 报告漏洞
+                    </a>
+                </div>
+            </div>
+            
+            <div class="website-card">
+                <div class="official-badge">官方</div>
+                <div class="card-header">
+                    <i class="fas fa-comments card-icon"></i>
+                    <h3>Minecraft 反馈平台</h3>
+                </div>
+                <div class="card-body">
+                    <p>官方反馈社区，可以在这里提交对游戏的建议，很多更新内容最初都来自这里的玩家建议。</p>
+                    <a href="https://feedback.minecraft.net" class="btn" target="_blank" rel="noopener noreferrer">
+                        <i class="fas fa-external-link-alt"></i> 前往反馈
+                    </a>
+                </div>
+            </div>
+            
+            <div class="website-card">
+                <div class="official-badge">官方</div>
+                <div class="card-header">
+                    <i class="fas fa-shopping-bag card-icon"></i>
+                    <h3>Minecraft 商城</h3>
+                </div>
+                <div class="card-body">
+                    <p>官方商城，购买Minecraft正版游戏、Realms服务器、皮肤、材质包和官方周边商品。</p>
+                    <a href="https://www.minecraft.net/zh-hans/store" class="btn" target="_blank" rel="noopener noreferrer">
+                        <i class="fas fa-external-link-alt"></i> 访问商城
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <h2 class="category"><i class="fas fa-book"></i> 维基百科</h2>
+        <div class="websites-grid">
+            <div class="website-card">
+                <div class="official-badge">官方</div>
+                <div class="card-header">
+                    <i class="fas fa-book card-icon"></i>
+                    <h3>Minecraft Wiki (英文)</h3>
+                </div>
+                <div class="card-body">
+                    <p>最权威的Minecraft英文百科全书，内容最全面、更新最及时，包含游戏所有详细信息。</p>
+                    <a href="https://minecraft.wiki" class="btn" target="_blank" rel="noopener noreferrer">
+                        <i class="fas fa-external-link-alt"></i> 访问英文Wiki
+                    </a>
+                </div>
+            </div>
+            
+            <div class="website-card">
+                <div class="official-badge">官方</div>
+                <div class="card-header">
+                    <i class="fas fa-book card-icon"></i>
+                    <h3>Minecraft Wiki (中文)</h3>
+                </div>
+                <div class="card-body">
+                    <p>Minecraft中文维基百科，包含游戏内容、机制、教程等全方位信息，由官方认可。</p>
+                    <a href="https://zh.minecraft.wiki" class="btn" target="_blank" rel="noopener noreferrer">
+                        <i class="fas fa-external-link-alt"></i> 访问中文Wiki
+                    </a>
+                </div>
+            </div>
+            
+            <div class="website-card">
+                <div class="official-badge">镜像</div>
+                <div class="card-header">
+                    <i class="fas fa-book card-icon"></i>
+                    <h3>Minecraft Wiki 镜像站</h3>
+                </div>
+                <div class="card-body">
+                    <p>中文Wiki的BilibiliGameWiki镜像站，国内访问速度更快，内容与主站同步。</p>
+                    <a href="https://wiki.biligame.com/mc/Minecraft_Wiki" class="btn" target="_blank" rel="noopener noreferrer">
+                        <i class="fas fa-external-link-alt"></i> 访问镜像站
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <h2 class="category"><i class="fas fa-users"></i> 论坛与社区</h2>
+        <div class="websites-grid">
+            <div class="website-card">
+                <div class="community-badge">热门</div>
+                <div class="card-header">
+                    <i class="fas fa-bolt card-icon"></i>
+                    <h3>苦力怕论坛</h3>
+                </div>
+                <div class="card-body">
+                    <p>国内知名的Minecraft论坛社区，分享资源、技术讨论和游戏心得，拥有活跃的用户群体。</p>
+                    <a href="https://www.klpbbs.com" class="btn" target="_blank" rel="noopener noreferrer">
+                        <i class="fas fa-external-link-alt"></i> 访问苦力怕论坛
+                    </a>
+                </div>
+            </div>
+            
+            <div class="website-card">
+                <div class="community-badge">热门</div>
+                <div class="card-header">
+                    <i class="fas fa-users card-icon"></i>
+                    <h3>MCBBS 论坛</h3>
+                </div>
+                <div class="card-body">
+                    <p>国内最著名的非官方Minecraft论坛，获取及时MC新闻、资源转载，与国内玩家和开发者交流。</p>
+                    <a href="https://www.mcbbs.net" class="btn" target="_blank" rel="noopener noreferrer">
+                        <i class="fas fa-external-link-alt"></i> 访问MCBBS
+                    </a>
+                </div>
+            </div>
+            
+            <div class="website-card">
+                <div class="community-badge">国际</div>
+                <div class="card-header">
+                    <i class="fas fa-globe card-icon"></i>
+                    <h3>Minecraft Forum</h3>
+                </div>
+                <div class="card-body">
+                    <p>国外知名的非官方Minecraft论坛，与全球Minecraft玩家和开发者交流分享。</p>
+                    <a href="https://www.minecraftforum.net" class="btn" target="_blank" rel="noopener noreferrer">
+                        <i class="fas fa-external-link-alt"></i> 访问国际论坛
+                    </a>
+                </div>
+            </div>
+            
+            <div class="website-card">
+                <div class="community-badge">国际</div>
+                <div class="card-header">
+                    <i class="fab fa-reddit card-icon"></i>
+                    <h3>Minecraft Reddit</h3>
+                </div>
+                <div class="card-body">
+                    <p>Reddit上的Minecraft社区，全球玩家分享创作、趣事和游戏经验的平台。</p>
+                    <a href="https://www.reddit.com/r/Minecraft" class="btn" target="_blank" rel="noopener noreferrer">
+                        <i class="fas fa-external-link-alt"></i> 访问Reddit
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <footer>
+        <div class="container">
+            <h3>前往官方Minecraft Wiki获取完整信息</h3>
+            <a href="https://minecraft.wiki" class="btn official-wiki-btn" target="_blank" rel="noopener noreferrer">
+                <i class="fas fa-external-link-alt"></i> 访问官方Minecraft Wiki
+            </a>
+        </div>
+    </footer>
+
+    <script>
+        // 简单的搜索功能
+        document.querySelector('.search-box input').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const cards = document.querySelectorAll('.website-card');
+            
+            cards.forEach(card => {
+                const title = card.querySelector('h3').textContent.toLowerCase();
+                const description = card.querySelector('p').textContent.toLowerCase();
+                
+                if (title.includes(searchTerm) || description.includes(searchTerm)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+        
+        // 添加卡片悬停效果
+        document.querySelectorAll('.website-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-8px)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+        
+        // 抖音链接测试
+        document.querySelector('.douyin-link').addEventListener('click', function(e) {
+            console.log('抖音链接被点击，正在尝试打开...');
+            // 允许默认行为（打开链接）
+        });
+    </script>
+</body>
+</html>
